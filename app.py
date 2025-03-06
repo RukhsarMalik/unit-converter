@@ -54,16 +54,15 @@ conversion_factors = {
     }
 }
 
-# Ensure session state for 'from_unit' and 'to_unit' exists
-if 'from_unit' not in st.session_state:
+# Ensure session state for 'from_unit' and 'to_unit' exists, reset if category changes
+if 'category' not in st.session_state or st.session_state.category != category:
+    st.session_state.category = category
     st.session_state.from_unit = unit_options[category][0]
-if 'to_unit' not in st.session_state:
     st.session_state.to_unit = unit_options[category][1]
 
 # Dropdowns for 'From' and 'To' units
-if category in unit_options:
-    st.session_state.from_unit = st.selectbox(f"From ({category}):", unit_options[category], index=unit_options[category].index(st.session_state.from_unit))
-    st.session_state.to_unit = st.selectbox(f"To ({category}):", unit_options[category], index=unit_options[category].index(st.session_state.to_unit))
+st.session_state.from_unit = st.selectbox(f"From ({category}):", unit_options[category], index=unit_options[category].index(st.session_state.from_unit))
+st.session_state.to_unit = st.selectbox(f"To ({category}):", unit_options[category], index=unit_options[category].index(st.session_state.to_unit))
 
 # Amount input
 amount = st.number_input("Amount:", min_value=0.0, format="%.2f")
